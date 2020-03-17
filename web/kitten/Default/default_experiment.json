@@ -1,0 +1,54 @@
+{
+  "all_procs":{
+<<<<<<< HEAD
+    "procedure_1.csv": [["Item","Trial Type","Max Time","Text",                                  "Shuffle 1"],
+                      ["2",   "Instruct",  "user",    "This is the start of a new experiment.",        "off"]]
+=======
+    "Procedure.csv": [["Item","Trial Type","Max Time","Text",                                  "Shuffle 1"],
+                      ["0",   "Instruct",  "user",    "This is the start of a new experiment.",        "off"]]
+>>>>>>> 94b84c7904574e43669bbc18777b7c6e9dc17b0f
+  },
+  "cond_array":[["Name",
+                 "Notes",
+                 "Stimuli",
+                 "Procedure",
+                 "fullscreen",
+                 "welcome",
+                 "participant_id",
+                 "end_message",
+                 "start_message",
+                 "buffer"],
+                ["condition_1",
+                 "You can put more detailed notes in this field",
+<<<<<<< HEAD
+                 "stimuli_1.csv",
+                 "procedure_1.csv",
+=======
+                 "Stimuli.csv",
+                 "Procedure.csv",
+>>>>>>> 94b84c7904574e43669bbc18777b7c6e9dc17b0f
+                 "off",
+                 "",
+                 "on",
+                 "",
+                 "",
+                 5]],
+<<<<<<< HEAD
+  "all_stims":{
+    "stimuli_1.csv":[
+=======
+  "Conditions.csv":[["Name","Notes","Stimuli 1","Procedure 1"],
+    ["New Experiment","You can put more detailed notes in this field","Stimuli.csv","Procedure.csv"]],
+  "all_stims":{
+    "Stimuli.csv":[
+>>>>>>> 94b84c7904574e43669bbc18777b7c6e9dc17b0f
+      ["Cue","Answer"],
+      ["A","Apple"],
+      ["B","Banana"]
+    ]
+  }
+<<<<<<< HEAD
+}
+=======
+}
+>>>>>>> 94b84c7904574e43669bbc18777b7c6e9dc17b0f

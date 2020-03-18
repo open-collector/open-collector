@@ -19,13 +19,8 @@
 		Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)
 */
 
-<<<<<<< HEAD
 require 'Code/InitiateCollector.php';
 require 'Libraries.html';
-=======
-require 'Code/initiateCollector.php';
-require 'libraries.html';
->>>>>>> 94b84c7904574e43669bbc18777b7c6e9dc17b0f
 
 ////////////////////////////////////////////////////////////////////
 // Do not implement below at the moment, it breaks the decryption //

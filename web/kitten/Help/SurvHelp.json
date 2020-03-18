@@ -3,7 +3,15 @@
 		"subtitle":"Answers the participant can choose",
 		"text":"A single answer or list of answers the participant can choose. Put a pipe character ( | ) between each possible answer. If you're having problems finding the pipe key, you can highlight the pipe in the brackets and then copy and paste it."
 	},
-	"item_name":{
+  "feedback":{
+    "subtitle":"Tell the participant about each answer",
+    "text": "You can list what feedback you associate with each response. Put a pipe | between each feedback"
+  },
+  "feedback_color":{
+    "subtitle":"What color is each feedback",
+    "title":"The colors you want to associate with each feedback (e.g. green for the correct ones, and red for the wrong ones. Put a pipe | between each feedback color",	
+	},
+  "item_name":{
 		"subtitle":"Column name in data sheet",
 		"text":"The <b>item_name</b> will be what the column header is in your data sheet. So make sure it's unique!"
 	},
@@ -27,7 +35,7 @@
 		"checkbox": "If you want the participant to be able to select multiple options, use a checkbox. If you only want them to be able to select one option, use a 'Radio'",
 		"date": "This allows standardised storage of date. Note that this works better in Chrome than firefox. ",
 		"dropdown":"A standard dropdown list. ",
-		"google_slide": "This is not YET in action. But will be :-) ",
+    "google_slide": "This is not YET in action. But will be :-) ",
 		"instruct": "Allows you to type in instructions. ",
 		"likert": "Participants can click on one of the options that they want. ",
 		"number": "Only allows participants to type in a number. ",

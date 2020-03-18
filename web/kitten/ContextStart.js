@@ -2,7 +2,6 @@
 // Eel functions
 //////////////////
 
-<<<<<<< HEAD
 python_dialog = bootbox.dialog({
   show:false,
   title:"Please wait",
@@ -24,8 +23,6 @@ function python_hide_bb(){
   },1000);
 }
 
-=======
->>>>>>> 94b84c7904574e43669bbc18777b7c6e9dc17b0f
 eel.expose(load_master_json);
 function load_master_json(this_json){
   master_json = this_json;
@@ -38,10 +35,7 @@ function load_master_json(this_json){
   list_trialtypes();
   initiate_actions();
   autoload_boosts();
-<<<<<<< HEAD
   wait_till_exists("list_keys");
-=======
->>>>>>> 94b84c7904574e43669bbc18777b7c6e9dc17b0f
 }
 
 // this is a hack to deal with asynchronous order of parts of the page loading

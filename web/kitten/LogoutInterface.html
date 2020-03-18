@@ -42,15 +42,6 @@
     <td>
       <span id="save_status" class="text-white"></span>
     </td>
-<<<<<<< HEAD
-=======
-		<td>
-			<span id="google_account_email" class="account_info text-white"></span>
-		</td>
-    <td>
-			<img class='logo' style="border-radius: 50%; background-color:white; padding:2px" src="../logos/google.png" id="google_logo">
-		</td>
->>>>>>> 94b84c7904574e43669bbc18777b7c6e9dc17b0f
     <td>
       <span id="collector_account_email" class="account_info text-white"></span>
     </td>
@@ -71,13 +62,6 @@
 
 <script>
 
-<<<<<<< HEAD
-=======
-console.dir("dev_obj");
-console.dir(dev_obj);
-console.dir(JSON.stringify(dev_obj));
-
->>>>>>> 94b84c7904574e43669bbc18777b7c6e9dc17b0f
 switch(dev_obj.context){
   case "github":
   case "localhost":
@@ -144,7 +128,6 @@ $("#github_logo").on("click",function(){
 
 		}
 	}
-<<<<<<< HEAD
   var dialog = bootbox.dialog({
     title: 'Synch with github repository',
     message: '<div class="jumbotron">' +
@@ -262,99 +245,6 @@ $("#github_logo").on("click",function(){
           //nothing, just close
         }
       }
-=======
-	if(typeof(master_json.github.repository) == "undefined"){
-		bootbox.alert("You need to identify or create an online git repository  of Collector to run this online");
-	} else {
-		master_json.exp_mgmt.exp_condition = $("#select_condition").val();
-		// put in code from collector install here
-		//bootbox.dialog("<div id='github_dialog'></div>");
-		//$("#github_dialog").load('IndexTabs/Studies/ExperimentEditor/GithubDialog.html');
-
-		var dialog = bootbox.dialog({
-			title: 'Synch with github repository',
-			message: '<div class="jumbotron">' +
-									'<h1 class="display-4">Collector</h1>' +
-									'<p class="lead">Put in the information below to allow you to update your online experiments</p>' +
-									'<div class="input-group mb-3">' +
-										'<div class="input-group-prepend">' +
-											'<span class="input-group-text bg-primary text-white">Your github username</span>' +
-										'</div>' +
-										'<input class="form-control" id="github_username"/>' +
-									'</div>' +
-									'<div class="input-group mb-3">'+
-										'<div class="input-group-prepend">'+
-										 ' <span class="input-group-text bg-primary text-white">Your password</span>' +
-										'</div>' +
-										'<input class="form-control" id="github_password"/>' +
-									'</div>' +
-									'<div class="input-group mb-3">'+
-										'<div class="input-group-prepend">'+
-										 ' <span class="input-group-text bg-primary text-white">Your organisation (optional)</span>' +
-										'</div>' +
-										'<input class="form-control" id="github_organisation"/>' +
-									'</div>' +
-									'<div class="input-group mb-3">' +
-										'<div class="input-group-prepend">' +
-											'<span class="input-group-text bg-primary text-white">Your repository\'s name</span>' +
-										'</div>' +
-										'<input class="form-control" id="github_repository"/>' +
-									'</div>' +
-								'</div>' +
-								'<script>' +
-									'if(typeof(master_json.github.organisation) == "undefined"){' +
-										'master_json.github.organisation = ""' +
-									'}' +
-									'$("#github_username").val(master_json.github.username);' +
-									'$("#github_organisation").val(master_json.github.organisation);' +
-									'$("#github_repository").val(master_json.github.repository);' +
-								'</' + 'script>',
-			buttons: {
-					synch: {
-							label: "Synch",
-							className: 'btn-primary',
-							callback: function(){
-								eel.push_collector($("#github_username").val(),
-																	 $("#github_password").val(),
-																	 $("#github_organisation").val(),
-																	 $("#github_repository").val());
-							}
-					},
-					cancel: {
-							label: "Cancel",
-							className: 'btn-secondary',
-							callback: function(){
-									//nothing, just close
-							}
-					},
-					update: {
-						label: "Update Collector",
-						classname: "btn-info",
-						callback:function(){
-							var username     = $("#github_username").val();
-							var organisation = $("#github_organisation").val();
-							var repository   = $("#github_repository").val();
-
-							bootbox.confirm("Are you sure you want to update Collector?",function(result){
-								if(result){
-									eel.pull_open_collector(username,
-																				 organisation,
-																				 repository);
-								}
-							});
-						}
-					}
-			}
-		});
-	}
-});
-
-
-$("#google_logo").on("click",function(){
-  bootbox.confirm("Would you like to open your google drive in a new tab?",function(response){
-    if(response){
-      window.open('https://drive.google.com/drive/u/0/my-drive','_blank');
->>>>>>> 94b84c7904574e43669bbc18777b7c6e9dc17b0f
     }
   });
 });

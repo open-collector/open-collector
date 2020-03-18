@@ -24,11 +24,7 @@ require_once ("cleanRequests.php");
 $cipher = "aes-256-cbc";
 define('AES_256_CBC', 'aes-256-cbc');
 
-<<<<<<< HEAD
 require_once "Code/InitiateCollector.php";
-=======
-require_once "Code/initiateCollector.php";
->>>>>>> 94b84c7904574e43669bbc18777b7c6e9dc17b0f
 require_once "../../sqlConnect.php";
 
 function generateRandomString($length = 10) {

@@ -90,14 +90,7 @@ function load_master_json(link_created){
       encrypt_obj.save_script_url();
     }
 
-<<<<<<< HEAD
     
-=======
-    $("#public_key").val(master_json.keys.public_key);
-    $("#private_key").val(master_json.keys.encrypted_private_key);
-
-		$("#option_Edit").click();
->>>>>>> 94b84c7904574e43669bbc18777b7c6e9dc17b0f
 		$("#startup_btn").fadeIn(500);
 		$("#startup_btn").on("click",function(){
 			startup_dialog.modal("hide");

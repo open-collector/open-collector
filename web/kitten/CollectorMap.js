@@ -3,7 +3,6 @@
 ///////////////
 
 //Publicly available libraries
-<<<<<<< HEAD
 window.jQuery        || document.write('<script src="../libraries/jquery-3.3.1.min><\/script>');
 
 window.bootstrap || document.write('<script src="../libraries/bootstrap.4.0.min"><\/script><link href="../libraries/bootstrapCollector.min.css" rel="stylesheet">');
@@ -15,30 +14,11 @@ window.Papa          || document.write('<script src="../libraries/papaparse.4.3.
 window.Handsontable || document.write('<link rel="stylesheet" href="https://anthonyhaffey.github.io/my-collector/kitten/Studies/handsontables/handsontables.full.css">' +
 '<script type="text/javascript" charset="utf-8" src="https://anthonyhaffey.github.io/my-collector/kitten/Studies/handsontables/handsontables.full.js">' + 
 '<\/script><script type="text/javascript" charset="utf-8" src="https://anthonyhaffey.github.io/my-collector/kitten/Studies/HandsontableFunctions.js"><\/script>');
-=======
-window.jQuery        || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"><\/script>');
-
-window.bootstrap || document.write('<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"><\/script><link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">');
-
-window.Papa          || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.1.0/papaparse.min.js"><\/script>');
-
-// Collector specific
-
-window.Handsontable || document.write('<link rel="stylesheet" href="https://anthonyhaffey.github.io/my-collector/kitten/IndexTabs/Studies/handsontables/handsontables.full.css">' +
-'<script type="text/javascript" charset="utf-8" src="https://anthonyhaffey.github.io/my-collector/kitten/IndexTabs/Studies/handsontables/handsontables.full.js">' + 
-'<\/script><script type="text/javascript" charset="utf-8" src="https://anthonyhaffey.github.io/my-collector/kitten/IndexTabs/Studies/HandsontableFunctions.js"><\/script>');
->>>>>>> 94b84c7904574e43669bbc18777b7c6e9dc17b0f
 
 window.clean_obj_keys || document.write('<script src="https://anthonyhaffey.github.io/my-collector/kitten/jsFunctions.js"><\/script>');
 
 
-<<<<<<< HEAD
 var isolation_map = {
-=======
-
-var isolation_map = {
-  //IndexTabs
->>>>>>> 94b84c7904574e43669bbc18777b7c6e9dc17b0f
   Default:{
     DefaultSurveys:{
       'autism_quotient.csv'     : 'file',
@@ -52,7 +32,6 @@ var isolation_map = {
     "default_experiment.json" : "file",
       //stuff here
   },
-<<<<<<< HEAD
   Data:{
     "ListData.php" : "file",
   },  
@@ -80,37 +59,6 @@ var isolation_map = {
   "CollectorMap.js" : "file",
   "jsFunctions.js"  : "file",
   "Libraries.html"  : "file",
-=======
-  IndexTabs:{
-    Data:{
-      "ListData.php" : "file",
-    },  
-
-    Help:{
-      "CondHelp.json" : "file",
-      "GrapHelp.json" : "file",
-      "MainHelp.json" : "file",
-      "ProcHelp.json" : "file",
-      "SurvHelp.json" : "file",
-    },
-    Studies:{
-      ExperimentEditor:{        
-        "ExperimentEditor.html" : "file"
-      },
-      TrialTypeEditor:{
-        "TrialTypeEditor.html" : "file",
-        "Graphic.html"         : "file",
-      }
-    },
-    Surveys : {
-      'Surveys.html'    : 'file',
-      'surveyTypes.csv' : 'file'
-    }
-  },
-  "CollectorMap.js" : "file",
-  "jsFunctions.js"  : "file",
-  "libraries.html"  : "file",
->>>>>>> 94b84c7904574e43669bbc18777b7c6e9dc17b0f
   "RunStudy.html"   : "file"
 }
 

@@ -17,27 +17,18 @@ function google_keys(key_type){
 
 function online_save(experiment_id,
                      participant_id,
-<<<<<<< HEAD
                      completion_code,
                      prehashed_code,
-=======
->>>>>>> 94b84c7904574e43669bbc18777b7c6e9dc17b0f
                      encrypted_data,
                      save_script_url,
                      after_function){
 
   data = {
-<<<<<<< HEAD
     completion_code: completion_code,
     encrypted_data:  encrypted_data,
     experiment_id:   experiment_id,
     participant_id:  participant_id,
     prehashed_code:  prehashed_code
-=======
-    participant_id: participant_id,
-    experiment_id:  experiment_id,
-    encrypted_data: encrypted_data,
->>>>>>> 94b84c7904574e43669bbc18777b7c6e9dc17b0f
   };
   $.ajax({
     type: 'POST',

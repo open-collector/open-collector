@@ -143,6 +143,9 @@ trialtypes_obj = {
 }
 function list_trialtypes(){
   function process_returned(returned_data){
+    
+    $("#trial_type_select").empty();
+    
     default_trialtypes = JSON.parse(returned_data);
 		user_trialtypes 	 = master_json.trialtypes.user_trialtypes;
 

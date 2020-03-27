@@ -3,6 +3,7 @@ import io
 import json
 import os
 import platform
+import shutil
 
 '''
 #packages needed to shut down and restart localhost if need be
@@ -20,6 +21,7 @@ def ask_python_exp(exp_name):
 @eel.expose
 def delete_exp(exp_name):
     os.remove("web/User/Experiments/" + exp_name + ".json")# delete file
+    shutil.rmtree("web/User/Experiments/" + exp_name)# delete folder
 
 @eel.expose
 def load_master_json():
@@ -32,6 +34,16 @@ def load_master_json():
         master_json = master_json.read()
         master_json = json.loads(master_json)
         eel.load_master_json(master_json)
+
+@eel.expose
+def load_trialtype(trialtype):
+    try:
+        trialtype_html = open("web/User/Trialtypes/" + trialtype, "r")
+        trialtype_html = trialtype_html.read()
+    except:
+        trialtype_html = ""
+    finally:
+        eel.python_trialtype(trialtype_html)
 
 
 @eel.expose
@@ -155,7 +167,7 @@ def save_data(experiment_name,
         os.mkdir("web/User/Data")
     if os.path.isdir("web/User/Data/" + experiment_name) == False:
         os.mkdir("web/User/Data/" + experiment_name)
-    experiment_file = open("web/User/Data/" + experiment_name+ "/" + participant_code + "-" + completion_code + ".csv", "w") #, newline=''
+    experiment_file = open("web/User/Data/" + experiment_name+ "/" + participant_code + "-" + completion_code + ".csv", "w", newline='')
     experiment_file.write(responses)
 
 
@@ -179,7 +191,7 @@ def save_experiment(experiment_name,experiment_json):
     python_message = python_message + "...<br> saving <b>conditions.csv</b>"
     eel.python_bootbox(python_message)
     try:    
-        this_cond_file = open("web/User/Experiments/" + experiment_name + "/conditions.csv", "w+") #, newline=''
+        this_cond_file = open("web/User/Experiments/" + experiment_name + "/conditions.csv", "w", newline='')
         this_cond_file.write(experiment_json["python_conditions"])
     except:
         errors += "...<br><span class='text-danger'>Error when trying to save <b>conditions.csv</b> - is the file open on your computer?</span>"
@@ -194,7 +206,7 @@ def save_experiment(experiment_name,experiment_json):
         print(this_proc)
         print(os.getcwd())
         try:            
-            this_proc_file = open("web/User/Experiments/" + experiment_name + "/" + this_proc, "wb") #, newline=''
+            this_proc_file = open("web/User/Experiments/" + experiment_name + "/" + this_proc, "w", newline='')
             this_proc_file.write(experiment_json["python_procs"][this_proc])
         except:
             errors += "...<br><span class='text-danger'> Error when trying to save <b>" + \
@@ -209,7 +221,7 @@ def save_experiment(experiment_name,experiment_json):
         eel.python_bootbox(python_message)
         print(this_stim)
         try:
-            this_stim_file = open("web/User/Experiments/" + experiment_name + "/" + this_stim, "wb") #, newline=''
+            this_stim_file = open("web/User/Experiments/" + experiment_name + "/" + this_stim, "w", newline='') 
             this_stim_file.write(experiment_json["python_stims"][this_stim])
         except:
             print("error here");
@@ -239,9 +251,17 @@ def save_survey(survey_name,
     #detect if the "User" folder exists yet
     if os.path.isdir("web/User/Surveys") == False:
         os.mkdir("web/User/Surveys")
-    survey_file = open("web/User/Surveys/" + survey_name, "wb") #, newline=''
+    survey_file = open("web/User/Surveys/" + survey_name, "w", newline='')
     survey_file.write(survey_content)
 
+@eel.expose
+def save_trialtype(trialtype_name,
+                   trialtype_content):
+    #detect if the "User" folder exists yet
+    if os.path.isdir("web/User/Trialtypes") == False:
+        os.mkdir("web/User/Trialtypes")
+    trialtype_file = open("web/User/Trialtypes/" + trialtype_name, "w", newline='')
+    trialtype_file.write(trialtype_content)
 
 ####################
 # Start Collector ##

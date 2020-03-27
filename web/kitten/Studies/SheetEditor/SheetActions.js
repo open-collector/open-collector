@@ -133,24 +133,38 @@ $("#rename_exp_btn").on("click",function(){
 			bootbox.alert("You already have an experiment with this name");
 		} else { //proceed
 			var original_name = $("#experiment_list").val();
-			dbx.filesMove({from_path:"/Experiments/"+original_name+".json",to_path:"/Experiments/"+new_name+".json"})
-				.then(function(result){
-					master_json.exp_mgmt.experiments[new_name] =
-					master_json.exp_mgmt.experiments[original_name];
-					delete(master_json.exp_mgmt.experiments[original_name]);
-					$.post("Studies/AjaxMySQL.php",{
-						action:"rename",
-						original_name:original_name,
-						new_name:new_name
-					}, function(returned_result){
-						update_master_json();
-						list_experiments();
-						$("#experiment_list").val(new_name);
-					});
-				})
-				.catch(function(error){
-					report_error(error);
-				});
+      master_json.exp_mgmt.experiment = new_name;
+      master_json.exp_mgmt.experiments[new_name] =
+      master_json.exp_mgmt.experiments[original_name];
+      delete(master_json.exp_mgmt.experiments[original_name]);
+      
+      switch(dev_obj.context){
+        case "localhost":
+          eel.save_experiment(new_name,master_json.exp_mgmt.experiments[new_name]);
+          eel.delete_exp(original_name);
+          update_master_json();
+          list_experiments();
+          $("#experiment_list").val(new_name);
+          $("#experiment_list").change();
+          break;
+      }
+      if(typeof(dbx) !== "undefined"){
+        dbx.filesMove({from_path:"/Experiments/"+original_name+".json",to_path:"/Experiments/"+new_name+".json"})
+          .then(function(result){
+            $.post("Studies/AjaxMySQL.php",{
+              action:"rename",
+              original_name:original_name,
+              new_name:new_name
+            }, function(returned_result){
+              update_master_json();
+              list_experiments();
+              $("#experiment_list").val(new_name);
+            });
+          })
+          .catch(function(error){
+            report_error(error);
+          });        
+      }
 		}
 		//confirm that there isn't another experiment with that name
 

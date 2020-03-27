@@ -207,4 +207,7 @@ function initiate_actions(){
       }
 		}
 	});
+  $("#upload_trialtype_button").on("click",function(){
+    
+  });
 }

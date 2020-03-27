@@ -55,9 +55,35 @@ trialtypes_obj = {
 		} else {
 			$("#delete_trial_type_button").show();
 		}
+    
 		var trialtype = master_json.trialtypes.trialtype;
-		var content = master_json.trialtypes[user_default+"s"][trialtype];
-		editor.setValue(content);
+    
+    eel.expose(python_trialtype);
+    function python_trialtype(content){
+      console.dir("content");
+      console.dir(content);
+      if(content == ""){
+        content = master_json.trialtypes[user_default+"s"][trialtype];
+      }
+      editor.setValue(content);
+    }
+
+    //python load if localhost
+    switch(dev_obj.context){
+      case "localhost":
+        cleaned_trialtype = trialtype.toLowerCase()
+                                     .replace(".html","") +
+                                     ".html";
+        console.dir(cleaned_trialtype);
+        var content = eel.load_trialtype(cleaned_trialtype);
+        break;
+      default:
+        var content = master_json.trialtypes[user_default+"s"][trialtype];
+        editor.setValue(content);    
+        break;
+    }
+    
+		
 	},
 	rename_trial_type:function(new_name){
 		var original_name = $("#trial_type_select").val();
@@ -86,7 +112,10 @@ trialtypes_obj = {
 			});
 		}
 	},
-	save_trialtype:function(content,name,new_old,graphic_code){
+	save_trialtype:function(content,
+                          name,
+                          new_old,
+                          graphic_code){
 		if(new_old == "new"){
 			graphic_editor_obj.clean_canvas();
       editor.setValue("");
@@ -119,6 +148,7 @@ trialtypes_obj = {
 			bootbox.alert("error: "+error.error+"<br> try saving again after waiting a little");
 		},
 		"filesUpload");
+    eel.save_trialtype(name.toLowerCase().replace(".html","") + ".html",content);
 	},
 	synchTrialtypesFolder:function(){
 		if(dropbox_check()){
@@ -145,6 +175,8 @@ function list_trialtypes(){
   function process_returned(returned_data){
     
     $("#trial_type_select").empty();
+    $("#trial_type_select").append("<option disabled>Select a trialtype</option>");
+    $("#trial_type_select").val("Select a trialtype");
     
     default_trialtypes = JSON.parse(returned_data);
 		user_trialtypes 	 = master_json.trialtypes.user_trialtypes;

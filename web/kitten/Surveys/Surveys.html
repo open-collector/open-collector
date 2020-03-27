@@ -42,7 +42,6 @@ if(typeof(dev_obj) == "undefined"){
 }
 </script>
 <script>
-default_surveys = {};
 
 function load_default_surveys(){
   var default_survey_files = ["autism_quotient.csv",
@@ -53,12 +52,12 @@ function load_default_surveys(){
     if(list.length > 0){
       var this_survey = list.pop();
       $.get(collector_map[this_survey],function(survey_content){
-        default_surveys[this_survey.toLowerCase()] = Papa.parse(survey_content).data;
+        master_json.surveys.default_surveys[this_survey.toLowerCase()] = Papa.parse(survey_content).data;
         load_survey(list);
       });
     } else {
       //based on solution by "dule" at https://stackoverflow.com/questions/740195/adding-options-to-a-select-using-jquery
-      default_surveys_list = Object.keys(default_surveys).sort();
+      default_surveys_list = Object.keys(master_json.surveys.default_surveys).sort();
       $.each(default_surveys_list, function (i, item) {
         $('#survey_select').append($('<option>', {
           value: "default|" + item , //.value,
@@ -207,15 +206,19 @@ function create_survey_HoT(this_survey){
 }
 
 function list_surveys(){
+  $("#survey_select").empty();
+  $("#survey_select").append("<option disabled>Select a survey</option>");
+  $("#survey_select").val("Select a survey");
+    
   if(typeof(master_json.surveys) == "undefined" ||
-     typeof(master_json.surveys.user_surveys) == "undefined"){
+    typeof(master_json.surveys.user_surveys) == "undefined"){
     master_json.surveys = {
       preview         : false,
       user_surveys    : {}
     }
   }
 	master_json.surveys = typeof(master_json.surveys) == "undefined" ? {} : master_json.surveys;
-	master_json.surveys.default_surveys = default_surveys;
+	master_json.surveys.default_surveys = {};
 
 	master_json.surveys.user_surveys = typeof(master_json.surveys.user_surveys) == "undefined" ? {} : master_json.surveys.user_surveys;
 	master_json.surveys.default_surveys = clean_obj_keys(master_json.surveys.default_surveys);

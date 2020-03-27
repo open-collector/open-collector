@@ -17,8 +17,9 @@
  
 		Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)
 */
-
-var libraries = '<scr' + 'ipt src="https://code.jquery.com/jquery-3.2.1.min.js"></scr' + 'ipt>' +				
+  
+var libraries = '<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />' +
+                '<scr' + 'ipt src="https://code.jquery.com/jquery-3.2.1.min.js"></scr' + 'ipt>' +				
 								'<scr' + 'ipt src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></scr' + 'ipt>'+
 								
 								'<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">' +

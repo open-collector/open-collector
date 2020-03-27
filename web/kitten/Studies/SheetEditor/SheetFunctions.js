@@ -472,8 +472,28 @@ function upload_exp_contents(these_contents,this_filename){
     $("#experiment_list").change();
           
 		upload_trialtypes(this_content);
+    upload_surveys(this_content);
+    list_surveys();
 	}
-
+  function upload_surveys(this_content){
+    function unique_survey(suggested_name,survey_content){
+      all_surveys = Object.keys(master_json.surveys.user_surveys).concat(Object.keys(master_json.surveys.default_surveys));
+      if(all_surveys.indexOf(suggested_name) !== -1){
+        bootbox.prompt("<b>" + suggested_name + "</b> is taken. Please suggest another name, or press cancel if you don't want to save this survey?",function(new_name){
+          if(new_name){
+            unique_survey(new_name,survey_content);
+          }
+        });
+      } else {
+        master_json.surveys.user_surveys[suggested_name] = survey_content;
+      }
+    }
+    
+    
+    Object.keys(this_content.surveys).forEach(function(this_survey){
+      unique_survey(this_survey,this_content.surveys[this_survey]);
+    });
+  }
 	function upload_trialtypes(this_content){
 		var trialtypes = Object.keys(this_content.trialtypes);
 		trialtypes.forEach(function(trialtype){
@@ -503,23 +523,29 @@ function upload_exp_contents(these_contents,this_filename){
 		value: cleaned_filename,
 
 		callback: function(exp_name){
-      
-      function unique_experiment(suggested_name,content){
-        all_experiments = Object.keys(master_json.exp_mgmt.experiments);
-        if(all_experiments.indexOf(suggested_name) !== -1){
-          bootbox.prompt("<b>" + suggested_name + "</b> is taken. Please suggest another name, or press cancel if you don't want to save this experiment?",function(new_name){
-            if(new_name){
-              unique_experiment(new_name,content);
-            }
-          });
-        } else {
-          master_json.exp_mgmt.experiments[suggested_name] = content;
-          list_experiments();
-          upload_to_master_json(exp_name,parsed_contents);
+      if(exp_name){
+        function unique_experiment(suggested_name,content){
+          all_experiments = Object.keys(master_json.exp_mgmt.experiments);
+          if(all_experiments.indexOf(suggested_name) !== -1){
+            bootbox.prompt("<b>" + suggested_name + "</b> is taken. Please suggest another name, or press cancel if you don't want to save this experiment?",function(new_name){
+              if(new_name){
+                unique_experiment(new_name,content);
+              } else {
+                upload_to_master_json(exp_name,parsed_contents);
+              }
+            });
+          } else {
+            master_json.exp_mgmt.experiments[suggested_name] = content;
+            list_experiments();
+            upload_to_master_json(exp_name,parsed_contents);
+          }
         }
+        unique_experiment(exp_name,parsed_contents);
+        $("#save_btn").click();        
+        
+      } else {
+        upload_to_master_json(exp_name,parsed_contents);
       }
-      unique_experiment(exp_name,parsed_contents);
-      $("#save_btn").click();
 		}
 	});
 }

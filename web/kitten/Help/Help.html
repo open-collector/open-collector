@@ -55,18 +55,23 @@
 <script>
 help_obj = {};
 var help_dictionary = {
-  cond:    "CondHelp.json",
-  graphic: "GrapHelp.json",
-  main:    "MainHelp.json",
-  proc:    "ProcHelp.json",
-  surv:    "SurvHelp.json"
+  cond:    "Help/CondHelp.json",
+  graphic: "Help/GrapHelp.json",
+  main:    "Help/MainHelp.json",
+  proc:    "Help/ProcHelp.json",
+  //surv:    "Help/SurvHelp.json"
 };
-function load_help(list){
-  if(list.length > 0){
-    help_item = list.pop();
-    $.get(collector_map[help_dictionary[help_item]],function(this_help){
+function load_help(this_list){
+  if(this_list.length > 0){
+    help_item = this_list.pop();
+    console.dir(help_item);
+    var brap;
+    $.get(help_dictionary[help_item],function(this_help){
+      console.dir("this_help");
+      console.dir(this_help);
+      brap = this_help;
       help_obj[help_item.replace(".json","")] = this_help;
-      load_help(list);
+      load_help(this_list);
     });
   } else {
     help_general_html = '<div class="container">';

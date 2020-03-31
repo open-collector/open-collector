@@ -1,3 +1,6 @@
 Collector.exe
 /venv
 /web/User/Data
+/build
+/dist
+/_pycache_

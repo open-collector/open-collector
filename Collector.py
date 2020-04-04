@@ -18,32 +18,36 @@ def ask_python_exp(exp_name):
     experiment_json = json.loads(experiment_file)
     eel.python_gives_exp(experiment_json)
 
+
+'''
+@eel.expose
+def repository_initialized():
+    os.chdir("web")
+    inited = os.popen('git rev-parse --is-inside-work-tree').read()
+#    os.system("git rev-parse --is-inside-work-tree");
+    os.chdir("..")
+    print("inited")
+    print(inited)
+    if "true" in inited:
+        print("repository exists")
+      
+        #get information about the repository??
+      
+    else:
+        print("repository not yet here");
+        
+        inited = os.popen('git init');
+        #resume here
+        
+        #eel.push_repository();
+ '''       
+      
+
 @eel.expose
 def delete_exp(exp_name):
     os.remove("web/User/Experiments/" + exp_name + ".json")# delete file
     shutil.rmtree("web/User/Experiments/" + exp_name)# delete folder
 
-@eel.expose
-def load_master_json():
-    #check if the uber mega file exists yet
-    try:
-        master_json = open("web/User/master.json", "r")
-    except:
-        master_json = open("web/kitten/Default/master.json", "r")
-    finally:
-        master_json = master_json.read()
-        master_json = json.loads(master_json)
-        eel.load_master_json(master_json)
-
-@eel.expose
-def load_trialtype(trialtype):
-    try:
-        trialtype_html = open("web/User/Trialtypes/" + trialtype, "r")
-        trialtype_html = trialtype_html.read()
-    except:
-        trialtype_html = ""
-    finally:
-        eel.python_trialtype(trialtype_html)
 
 
 @eel.expose
@@ -72,8 +76,10 @@ def pull_open_collector_only():
     os.system("remote set-url origin https://github.com/open-collector/open-collector.git")
     os.system("git fetch origin master")
     os.system("git merge -X theirs origin/master --allow-unrelated-histories -m'update from open-collector'")
-    if platform.system().lower() == "windows":
-        os.system("WindowsCompileCollector.bat")
+    
+    
+    #if platform.system().lower() == "windows":
+    #    os.system("WindowsCompileCollector.bat")
     #currently mac and linux users have to use python versions.
 
 @eel.expose
@@ -92,15 +98,27 @@ def push_collector(username,
         os.system("git add .")
         os.system('git commit -m "' + str(this_message) + '"')
         os.system("git push https://" + username + ":" + password + "@github.com/" + organisation + "/" + repository+ ".git")
+        print("It all seems to have worked - mostly speaking")
     except:
         print("looks like I need to create a repository to push to")
+        eel.python_bootbox("Creating repositories from Collector not yet implemented - please create the repository on github");
 
+        '''
         #need to make this a repository
         if(organisation != username):
             create_repository = organisation + "/" + repository
         else :
             create_repository = repository
         os.system('git init')
+        
+        # check if hub is installed
+        
+        # this may require installing scoop for windows
+        
+        # or brew for mac/linux
+        
+        
+        
         os.system('eval "$(ssh-agent -s)"')
         os.system("hub create " + create_repository)
         os.system("git add .")
@@ -110,6 +128,7 @@ def push_collector(username,
         #git push --set-upstream py2rm-collector
 
         #os.system("git push https://" + username + ":" + password + "@github.com/" + organisation + "/" + repository)
+        '''
     finally:
         print("It all seems to have worked - mostly speaking")
 
@@ -262,6 +281,51 @@ def save_trialtype(trialtype_name,
         os.mkdir("web/User/Trialtypes")
     trialtype_file = open("web/User/Trialtypes/" + trialtype_name, "w", newline='')
     trialtype_file.write(trialtype_content)
+
+
+# user management
+
+@eel.expose
+def new_user(username):
+    
+    # check if users folder exists
+    if os.path.isdir("web/Users") == False:
+        os.mkdir("web/Users")
+        
+    #check if the user already exists
+    if os.path.exists("web/Users/" + username):
+        eel.python_bootbox("User: <b>" + username + "</b> user already exists")
+    else:
+        os.mkdir("web/Users/" + username)
+        eel.new_user_added(username)
+        eel.python_bootbox("User: <b>" + username + "</b> created")
+
+
+# Code that (hopefully) can be deleted
+## effectively deleted
+@eel.expose
+def load_master_json():
+    #check if the uber mega file exists yet
+    try:
+        master_json = open("web/User/master.json", "r")
+    except:
+        master_json = open("web/kitten/Default/master.json", "r")
+    finally:
+        master_json = master_json.read()
+        master_json = json.loads(master_json)
+        eel.load_master_json(master_json)
+
+##to be deleted
+@eel.expose
+def load_trialtype(trialtype):
+    try:
+        trialtype_html = open("web/User/Trialtypes/" + trialtype, "r")
+        trialtype_html = trialtype_html.read()
+    except:
+        trialtype_html = ""
+    finally:
+        eel.python_trialtype(trialtype_html)
+
 
 ####################
 # Start Collector ##

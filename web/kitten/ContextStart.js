@@ -48,7 +48,6 @@ function wait_till_exists(this_function){
     window[this_function]();
   }
 }
-
 switch(dev_obj.context){
   case "gitpod":
   case "server":
@@ -56,6 +55,6 @@ switch(dev_obj.context){
     check_authenticated();   //check dropbox
     break;
   case "localhost":
-    eel.load_master_json();  //don't use dropbox
+    eel.load_master_json();     // don't use dropbox
     break;
 }

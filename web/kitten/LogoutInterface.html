@@ -159,7 +159,7 @@ $("#github_logo").on("click",function(){
                 '$("#github_username").val(master_json.github.username);' +
                 '$("#github_organisation").val(master_json.github.organisation);' +
                 '$("#github_repository").val(master_json.github.repository);' +
-                
+
                 '$("#github_repository").on("keyup",function(){' +
                   'master_json.github.repository = $("#github_repository").val();' +
                 '});' +
@@ -178,7 +178,7 @@ $("#github_logo").on("click",function(){
           var organisation = $("#github_organisation").val();
           var repository   = $("#github_repository").val();
           var username     = $("#github_username").val();
-          
+
           bootbox.prompt({
             title: "What is your password? (this will never be saved, but is needed to upload your changes to github)",
             inputType: "password",
@@ -190,16 +190,16 @@ $("#github_logo").on("click",function(){
                                        password,
                                        organisation,
                                        repository,
-                                       update_message);              
+                                       update_message);
                   } else {
                     eel.push_collector(username,
                                        password,
                                        organisation,
                                        repository,
-                                       "No message");              
-                  }            
-                });            
-              }          
+                                       "No message");
+                  }
+                });
+              }
             }
           });
         }
@@ -215,8 +215,8 @@ $("#github_logo").on("click",function(){
           if(organisation == ""){
             organisation = username;
           }
-          window.open('https://www.github.com/' + 
-                      organisation + 
+          window.open('https://www.github.com/' +
+                      organisation +
                       '/' +
                       repository,'_blank');
         }
@@ -231,9 +231,13 @@ $("#github_logo").on("click",function(){
 
           bootbox.confirm("Are you sure you want to update Collector?",function(result){
             if(result){
-              eel.pull_open_collector(username,
-                                     organisation,
-                                     repository);
+							bootbox.prompt("What is your password",function(password){
+								eel.pull_open_collector(username,
+																				password,
+	                                      organisation,
+	                                      repository);
+
+							});
             }
           });
         }

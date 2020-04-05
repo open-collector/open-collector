@@ -37,8 +37,8 @@ copy_tree("update_backup",
 shutil.copyfile("../Collector-update/Collector.py",
                 "Collector.py")
                 
-shutil.copyfile("../Collector-update/UpdateCollector.py",
-                "UpdateCollector.py")
+shutil.copyfile("../Collector-update/Updater/UpdateCollector.py",
+                "Updater/UpdateCollector.py")
 
 os.system("python -m eel Collector.py web --noconsole --icon=collector.ico --noconfirm")
 

@@ -331,13 +331,21 @@ def load_trialtype(trialtype):
 
 @eel.expose
 def simple_update():
+    #detect if exe or not
+    path_appendage = ""
+    if os.path.exists("Collector.exe"):
+        print("appending path as working from an exe")
+        path_appendage = "../../"
+        
+
+
     #Copy user folder somewhere safe
     
-    if os.path.isdir("update_backup") == False:
-        os.mkdir("update_backup")
+    if os.path.isdir(path_appendage + "update_backup") == False:
+        os.mkdir(path_appendage + "update_backup")
 
     try:
-        copy_tree("web/User", "/update_backup/")
+        copy_tree(path_appendage + "web/User", path_appendage + "/update_backup/")
     except:
         print("no user files yet")
     finally:
@@ -345,28 +353,35 @@ def simple_update():
     
     #Download open-collector
     repoClone = pygit2.clone_repository("https://github.com/open-collector/open-collector",
-                                      "../Collector-update")
+                                      path_appendage + "../Collector-update")
     
     #delete web folder
-    shutil.rmtree("web")
-    os.mkdir("web")    
-    copy_tree("../Collector-update/web","web")
+    shutil.rmtree(path_appendage + "web")
+    os.mkdir(path_appendage + "web")    
+    copy_tree(path_appendage + "../Collector-update/web","web")
     
     #reinstate the User folder
-    if os.path.isdir("web/User") == False:
-        os.mkdir("web/User")
-    copy_tree("update_backup", "web/User")
+    if os.path.isdir(path_appendage + "web/User") == False:
+        os.mkdir(path_appendage + "web/User")
+    copy_tree(path_appendage + "update_backup", 
+              path_appendage + "web/User")
     
-    shutil.copyfile("../Collector-update/Collector.py","Collector.py")
+    shutil.copyfile(path_appendage +"../Collector-update/Collector.py",
+                    path_appendage + "Collector.py")
     
-    
+    if path_appendage == "../../":
+        os.chdir("..")
+        os.chdir("..")
     #reinstall Collector
     os.system("python -m eel Collector.py web --noconsole --icon=collector.ico --noconfirm")
+    
+    if path_appendage == "../../":
+        os.chdir("dist/Collector");
     
     print("update complete")
 
     
-    os.system('rmdir /S /Q "{}"'.format("../Collector-update"))
+    os.system('rmdir /S /Q "{}"'.format(path_appendage + "../Collector-update"))
     
     print("removed Collector-update")
     

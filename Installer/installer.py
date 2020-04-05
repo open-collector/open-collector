@@ -13,6 +13,8 @@ def install_in_dir(this_dir):
                                             "/Collector")
         os.chdir(this_dir + "/Collector");
         os.system("python -m eel Collector.py web --noconsole --icon=collector.ico --noconfirm")
+        os.chdir("Updater")
+        os.system("python -m eel UpdateCollector.py web --icon=collector.ico --noconfirm --onefile") #--noconsole
         
   
 

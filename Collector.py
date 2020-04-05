@@ -344,7 +344,7 @@ def simple_update():
         print("User files updated");
     
     #Download open-collector
-    repoClone = pygit2.clone_repository("#https://github.com/open-collector/open-collector",
+    repoClone = pygit2.clone_repository("https://github.com/open-collector/open-collector",
                                       "../Collector-update")
     
     #delete web folder
@@ -359,12 +359,18 @@ def simple_update():
     
     shutil.copyfile("../Collector-update/Collector.py","Collector.py")
     
-    shutil.rmtree("../Collector-update")
     
     #reinstall Collector
     os.system("python -m eel Collector.py web --noconsole --icon=collector.ico --noconfirm")
+    
     print("update complete")
 
+    
+    os.system('rmdir /S /Q "{}"'.format("../Collector-update"))
+    
+    print("removed Collector-update")
+    
+    
 ####################
 # Start Collector ##
 ####################

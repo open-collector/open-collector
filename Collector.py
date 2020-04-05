@@ -1,9 +1,12 @@
 import eel
 import io
 import json
+import pygit2
 import os
 import platform
 import shutil
+
+from distutils.dir_util import copy_tree
 
 '''
 #packages needed to shut down and restart localhost if need be
@@ -326,11 +329,47 @@ def load_trialtype(trialtype):
     finally:
         eel.python_trialtype(trialtype_html)
 
+@eel.expose
+def simple_update():
+    #Copy user folder somewhere safe
+    
+    if os.path.isdir("update_backup") == False:
+        os.mkdir("update_backup")
+
+    try:
+        copy_tree("web/User", "/update_backup/")
+    except:
+        print("no user files yet")
+    finally:
+        print("User files updated");
+    
+    #Download open-collector
+    repoClone = pygit2.clone_repository("#https://github.com/open-collector/open-collector",
+                                      "../Collector-update")
+    
+    #delete web folder
+    shutil.rmtree("web")
+    os.mkdir("web")    
+    copy_tree("../Collector-update/web","web")
+    
+    #reinstate the User folder
+    if os.path.isdir("web/User") == False:
+        os.mkdir("web/User")
+    copy_tree("update_backup", "web/User")
+    
+    shutil.copyfile("../Collector-update/Collector.py","Collector.py")
+    
+    shutil.rmtree("../Collector-update")
+    
+    #reinstall Collector
+    os.system("python -m eel Collector.py web --noconsole --icon=collector.ico --noconfirm")
+    print("update complete")
 
 ####################
 # Start Collector ##
 ####################
 
+'''
 if os.path.isdir("web") == False:
 
     # more code here
@@ -340,7 +379,7 @@ if os.path.isdir("web") == False:
     # check if github is installed
 
     pull_open_collector_only()
-
+'''
 
 
 eel.init('web') #allowed_extensions=[".js",".html"]

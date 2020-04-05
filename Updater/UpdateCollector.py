@@ -5,18 +5,19 @@
 
 import os
 import pygit2
+import shutil
+from distutils.dir_util import copy_tree
 
 #Copy user folder somewhere safe
 
 if os.path.isdir("update_backup") == False:
     os.mkdir("update_backup")
 
-try:
-    copy_tree("web/User", "/update_backup/")
-except:
-    print("no user files yet")
-finally:
-    print("User files updated");
+copy_tree("web/User", "update_backup")
+print("User files updated");
+
+if os.path.isdir("../Collector-update"):
+    os.system('rmdir /S /Q "{}"'.format("../Collector-update"))
 
 #Download open-collector
 repoClone = pygit2.clone_repository("https://github.com/open-collector/open-collector",
@@ -45,6 +46,6 @@ os.system("python -m eel Collector.py web --noconsole --icon=collector.ico --noc
 print("update complete")
 
 
-os.system('rmdir /S /Q "{}"'.format(path_appendage + "../Collector-update"))
+os.system('rmdir /S /Q "{}"'.format("../Collector-update"))
 
 print("removed Collector-update")

@@ -4,7 +4,7 @@ Collector.exe
 /build
 /dist
 /_pycache_
-/Support/__pychache__
-/Support/build
-/Support/dist
-/Support/UpdateCollector.spec
+/Updater/__pychache__
+/Updater/build
+/Updater/dist
+/Updaer/UpdateCollector.spec

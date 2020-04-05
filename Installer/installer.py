@@ -1,8 +1,10 @@
 import os
 import github
 import pygit2
+import shutil
 from tkinter import filedialog
 from tkinter import *
+
 
 def install_in_dir(this_dir):
     if this_dir != "":
@@ -15,7 +17,7 @@ def install_in_dir(this_dir):
         os.system("python -m eel Collector.py web --noconsole --icon=collector.ico --noconfirm")
         os.chdir("Updater")
         os.system("python -m eel UpdateCollector.py web --icon=collector.ico --noconfirm --onefile") #--noconsole
-        
+        shutil.move("dist/UpdateCollector.exe","../UpdateCollector.exe");
   
 
 

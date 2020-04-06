@@ -1,3 +1,23 @@
+def install_if_missing(package):
+    import importlib
+    try:
+        importlib.import_module(package)
+    except ImportError:
+        import pip
+        pip.main(['install', package])
+    finally:
+        print (package + " package installed or verified")
+        
+        
+install_if_missing("eel")
+install_if_missing("io")
+install_if_missing("json")
+install_if_missing("os")
+install_if_missing("platform")
+install_if_missing("pygit2")
+install_if_missing("shutil")
+install_if_missing("tkinter")
+
 import eel
 import io
 import json

@@ -1,3 +1,20 @@
+# code to install any packages that are missing
+def install_if_missing(package):
+    import importlib
+    try:
+        importlib.import_module(package)
+    except ImportError:
+        import pip
+        pip.main(['install', package])
+    finally:
+        print (package + " package installed or verified")
+
+install_if_missing("os")
+install_if_missing("PyGithub")
+install_if_missing("pygit2")
+install_if_missing("shutil")
+install_if_missing("tkinter")
+
 import os
 import github
 import pygit2

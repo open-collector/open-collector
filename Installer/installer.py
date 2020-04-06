@@ -17,10 +17,16 @@ def install_in_dir(this_dir):
                                             "/Collector")
         os.chdir(this_dir + "/Collector");
         print("installing executable file");
-        os.system("python -m eel Collector.py web --icon=collector.ico --noconfirm")
+        os.system("python -m eel Collector.py web --icon=collector.ico --noconfirm #--noconsole")
+        
+        # create shortcut to executable here
+        
+        
         os.chdir("Updater")
-        os.system("python -m eel UpdateCollector.py web --icon=collector.ico --noconfirm --onefile") #--noconsole
+        os.system("python -m eel UpdateCollector.py web --icon=collector.ico --noconfirm --onefile")
         shutil.move("dist/UpdateCollector.exe","../UpdateCollector.exe");
+        
+        
   
 
 

@@ -1,20 +1,4 @@
 # code to install any packages that are missing
-def install_if_missing(package):
-    import importlib
-    try:
-        importlib.import_module(package)
-    except ImportError:
-        import pip
-        pip.main(['install', package])
-    finally:
-        print (package + " package installed or verified")
-
-install_if_missing("os")
-install_if_missing("PyGithub")
-install_if_missing("pygit2")
-install_if_missing("shutil")
-install_if_missing("tkinter")
-
 import os
 import github
 import pygit2
@@ -27,11 +11,13 @@ def install_in_dir(this_dir):
     if this_dir != "":
         #Clone the newly created repo
         print(this_dir);
+        print("downloading Collector into your directory")
         repoClone = pygit2.clone_repository("https://github.com/open-collector/open-collector",
                                             str(this_dir) +
                                             "/Collector")
         os.chdir(this_dir + "/Collector");
-        os.system("python -m eel Collector.py web --noconsole --icon=collector.ico --noconfirm")
+        print("installing executable file");
+        os.system("python -m eel Collector.py web --icon=collector.ico --noconfirm")
         os.chdir("Updater")
         os.system("python -m eel UpdateCollector.py web --icon=collector.ico --noconfirm --onefile") #--noconsole
         shutil.move("dist/UpdateCollector.exe","../UpdateCollector.exe");

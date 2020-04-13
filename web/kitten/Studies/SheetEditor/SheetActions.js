@@ -554,18 +554,9 @@ $("#default_experiments_select").on("change",function(){
 $("#upload_default_exp_btn").on("click",function(){
 	var default_experiment_name = $("#default_experiments_select").val();
 	if(default_experiment_name !== "Select an experiment"){
-		bootbox.prompt({
-			title:"What do you want to call this experiment?",
-			value:$("#default_experiments_select").val(),
-			callback:function(result){
-				$.get("Default/DefaultExperiments/" + default_experiment_name + ".json",function(experiment_json){
-					console.dir(experiment_json);
-					console.dir(JSON.stringify(experiment_json));
-					upload_exp_contents(JSON.stringify(experiment_json),result);
-
-
-				})
-			}
+		$.get("Default/DefaultExperiments/" + default_experiment_name + ".json",function(experiment_json){
+			upload_exp_contents(JSON.stringify(experiment_json),default_experiment_name);
+			$("#upload_experiment_modal").hide();
 		});
 	}
 });

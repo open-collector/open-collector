@@ -24,7 +24,7 @@ switch(dev_obj.context){
   case "gitpod":
   case "server":
   case "github":
-    check_authenticated();   //check dropbox
+    wait_till_exists("check_authenticated");  //check dropbox    
     break;
   case "localhost":
 	eel.expose(python_bootbox);

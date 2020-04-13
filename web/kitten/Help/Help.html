@@ -128,7 +128,13 @@ function helperActivate(help_title, cellValue,help_type){
 
 	// give Condition advice
   ////////////////////////
-	if(help_type == "Conditions.csv"){
+	/*
+	console.dir("help_type");
+	console.dir(help_type);
+	console.dir("help_title");
+	console.dir(help_title);
+	*/
+	if(help_type.toLowerCase() == "conditions.csv"){
     if(help_title == ""){
       $("#help_subtitle").html("Blank header");
       $("#help_text").html("Valid <b>conditions</b> settings include: <br><em>" + Object.keys(help_obj.cond).join("<br>")+"</em>");
@@ -216,7 +222,7 @@ function helperActivate(help_title, cellValue,help_type){
       } else {
         $("#help_subtitle").html("unknown setting");
         $("#help_text").html("This is not a setting for the <b>procedure</b> sheet that Collector is aware of - maybe it should be in the <b>conditions</b> sheet?" +
-        "Valid <b>conditions</b> settings include: <br><em>" + Object.keys(help_obj.proc).join("<br>")+"</em>");
+        "Valid <b>procedure</b> settings include: <br><em>" + Object.keys(help_obj.proc).join("<br>")+"</em>");
       }
     }
   }
@@ -228,7 +234,7 @@ function helperActivate(help_title, cellValue,help_type){
       $("#help_subtitle").html("Blank header");
     } else {
       $("#help_subtitle").html("{{variable}}");
-      $("#help_text").html("You can insert a stimuli into a trial by writing it in this sheet, and then referring to it in a trialtype with {{ variable_name }}." + 
+      $("#help_text").html("You can insert a stimuli into a trial by writing it in this sheet, and then referring to it in a trialtype with {{ variable_name }}." +
         " <b>cue</b> and <b>answer</b> are put in as examples, but any variable name can be used. Try to use underscores (_) rather than spaces in variable names though." +
         " <br><br> Also, be aware that when referring to a variable within the < script> tag, you should put quotes around it in the script. For example, if you have the variable <b>color</b>, then within the script tag you would write: <br><br> color = '{{color}}';.");
     }

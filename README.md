@@ -1,5 +1,7 @@
 # open-collector
 
+Go to https://open-collector.github.io/open-collector/web to use.
+
 ## Getting started
 
 

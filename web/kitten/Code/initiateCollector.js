@@ -121,9 +121,17 @@ function custom_alert(msg,duration) {
 		});
 	});
 }
+
+
+
 function detect_context(){
+  var dropbox_developer = true;                                                 //turn to false to make use of eel and python
   if(document.URL.indexOf("localhost") !== -1){
-    return "localhost";
+    if(dropbox_developer){
+      return "github";
+    } else {
+      return "localhost";
+    }
   } else if(document.URL.indexOf("github.io") !== -1) { //assume it's github
     return "github";
   } else if(document.URL.indexOf("gitpod.io") !== -1){

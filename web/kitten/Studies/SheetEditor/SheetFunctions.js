@@ -131,7 +131,7 @@ function list_experiments(){
         first_load = false;
       }
       master_json.exp_mgmt.experiment = this.value;
-      
+
       exp_json = master_json.exp_mgmt.experiments[master_json.exp_mgmt.experiment];
       clean_conditions();
       $("#dropbox_inputs").show();
@@ -348,7 +348,7 @@ function update_handsontables(){
             } else if(sheet_type == "Procedure"){
               var sheet_json = master_json.exp_mgmt
                                           .experiments[experiment]
-                                          .all_procs[sheet_name];              
+                                          .all_procs[sheet_name];
             } else {
               bootbox.alert("Problem loading experiment - not sure what type of sheet <b>" + sheet_type + "</b> is.");
             }
@@ -358,9 +358,6 @@ function update_handsontables(){
           }
         }
         //check each sheet exists first
-        
-        
-        
         eel.request_sheet(experiment,
                           "Conditions",
                           "conditions.csv");
@@ -371,28 +368,12 @@ function update_handsontables(){
                           "Procedure",
                           proc_file);
       case "github":
-        $.get("../User/Experiments/" + experiment + "/conditions.csv",function(result){
-          createExpEditorHoT(Papa.parse(result).data,
-                             "Conditions",
-                             "Conditions.csv");
-        });
-        $.get("../User/Experiments/" + experiment + "/" + stim_file,function(result){
-          createExpEditorHoT(Papa.parse(result).data, 
-                             "Stimuli", 
-                             stim_file);
-        });
-        $.get("../User/Experiments/" + experiment + "/" + proc_file,function(result){
-          createExpEditorHoT(Papa.parse(result).data, 
-                             "Procedure", 
-                             proc_file);
-        });
-        break;
       default:
       	createExpEditorHoT(this_exp.all_stims[stim_file], "Stimuli",   stim_file);
         createExpEditorHoT(this_exp.all_procs[proc_file], "Procedure", proc_file);
         createExpEditorHoT(this_exp.cond_array, "Conditions","Conditions.csv");
         break;
-  
+
   }
 
 
@@ -404,7 +385,7 @@ function update_master_json(){
                       contents:JSON.stringify(master_json),
                       mode:'overwrite'},
                       function(result){
-		
+
 	},function(error){
 		bootbox.alert(error.error + "<br> Perhaps wait a bit and save again?");
 	},
@@ -470,7 +451,7 @@ function upload_exp_contents(these_contents,this_filename){
 		list_experiments();
     $("#experiment_list").val(exp_name);
     $("#experiment_list").change();
-          
+
 		upload_trialtypes(this_content);
     upload_surveys(this_content);
     list_surveys();
@@ -488,8 +469,8 @@ function upload_exp_contents(these_contents,this_filename){
         master_json.surveys.user_surveys[suggested_name] = survey_content;
       }
     }
-    
-    
+
+
     Object.keys(this_content.surveys).forEach(function(this_survey){
       unique_survey(this_survey,this_content.surveys[this_survey]);
     });
@@ -511,7 +492,7 @@ function upload_exp_contents(these_contents,this_filename){
           list_trialtypes();
         }
       }
-      
+
 			// ask the user if they want to replace the trialtype
       unique_trialtype(trialtype,this_content.trialtypes[trialtype]);
 		});
@@ -541,8 +522,8 @@ function upload_exp_contents(these_contents,this_filename){
           }
         }
         unique_experiment(exp_name,parsed_contents);
-        $("#save_btn").click();        
-        
+        $("#save_btn").click();
+
       } else {
         upload_to_master_json(exp_name,parsed_contents);
       }

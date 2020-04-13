@@ -233,95 +233,150 @@ $("#rename_stim_button").on("click",function(){
 	});
 });
 $("#run_btn").on("click",function(){
-  if(typeof(master_json.data.save_script) == "undefined" ||
-    //test here for whether there is a github repository linked
-    master_json.data.save_script == ""){
-
-    bootbox.prompt("You currently have no link that saves your data. Please follow the instructions in the tutorial (to be completed), and then copy the link to confirm where to save your data below:",function(this_url){
-      if(this_url){
-        master_json.data.save_script = this_url;
-        $("#save_btn").click();
-      }
-    });
-  }
-  /*
-
-
-  password check here
-
-
-
-  if(typeof(master_json.data.save_script) == "undefined" ||
-    //test here for whether there is a github repository linked
-    master_json.data.save_script == ""){
-
-
-  }
-  */
+	var experiment = master_json.exp_mgmt.experiment;
+	var exp_json = master_json.exp_mgmt.experiments[experiment];
 	var select_html = '<select id="select_condition" class="custom-select">';
 	exp_json.conditions.forEach(function(condition){
 		select_html += "<option>" + condition.name + "</option>";
 	});
 	select_html += "</select>";
 
-	bootbox.dialog({
-		title:"Select a Condition",
-		message: "Which condition would you like to run? <br><br>" + select_html,
-		buttons: {
-      local:{
-        label: "Localhost",
-				className: 'btn-primary',
-				callback: function(){
-					window.open("RunStudy.html?platform=localhost&" +
-                      "location=" + master_json.exp_mgmt.experiment + "&" +
-                      "name=" + $("#select_condition").val(),"_blank");
-				}
-      },
-			online: {
-				label: "Online",
-				className: 'btn-primary',
-				callback: function(){
-					master_json.exp_mgmt.exp_condition = $("#select_condition").val();
-					bootbox.confirm("This will go to the link you should send your participants. However, it can take 5+ minutes for this link to update from the moment you push the updates to github",function(result){
-						if(result){
-              if(master_json.github.organisation !== ""){
-                var organisation = master_json.github.organisation;
-              } else {
-                var organisation = master_json.github.username;
-              }
-							var github_url =  "https://" +
-						                    organisation +
-						                    ".github.io/" +
-						                    master_json.github.repository +
-						                    "/web/" +
-						                    dev_obj.version +
-						                    "/";
+	switch(dev_obj.context){
+		case "github":
+		bootbox.dialog({
+			title:"Select a Condition",
+				message: "Which condition would you like to run? <br><br>" + select_html,
+				buttons: {
+					online: {
+						label: "Online",
+						className: 'btn-primary',
+						callback: function(){
+							master_json.exp_mgmt.exp_condition = $("#select_condition").val();
 
-						  window.open(github_url  + "RunStudy.html?platform=github&" +
-						              "location=" + master_json.exp_mgmt.experiment + "&" +
-						              "name="     + master_json.exp_mgmt.exp_condition ,"_blank");
+							var github_url =  "https://open-collector.github.io/open-collector/web/"+
+																dev_obj.version +
+																"/";
+
+							window.open(github_url  + "RunStudy.html?platform=github&" +
+													"location=" + master_json.exp_mgmt.experiment + "&" +
+													"name="     + master_json.exp_mgmt.exp_condition + "&" +
+													"dropbox="  + exp_json.location,"_blank");
 						}
-					});
+					},
+					preview:{
+						label: "Preview",
+						className: 'btn-primary',
+						callback: function(){
+							master_json.exp_mgmt.exp_condition = $("#select_condition").val();
+
+							var github_url =  "https://open-collector.github.io/open-collector/web/"+
+																dev_obj.version +
+																"/";
+							window.open(github_url  + "RunStudy.html?platform=preview&" +
+													"location=" + master_json.exp_mgmt.experiment + "&" +
+													"name="     + master_json.exp_mgmt.exp_condition + "&" +
+													"dropbox="  + exp_json.location,"_blank");
+
+						}
+					},
+					cancel: {
+						label: "Cancel",
+						className: 'btn-secondary',
+						callback: function(){
+							//nada;
+						}
+					}
 				}
-			},
-      preview:{
-        label: "Preview",
-				className: 'btn-primary',
-				callback: function(){
-					window.open("RunStudy.html?platform=preview&" +
-                      "location=" + master_json.exp_mgmt.experiment + "&" +
-                      "name=" + $("#select_condition").val(),"_blank");
-				}
-      },
-			cancel: {
-				label: "Cancel",
-				className: 'btn-secondary',
-				callback: function(){
-					//nada;
-				}
+			});
+			break;
+		case "localhost":
+			if(typeof(master_json.data.save_script) == "undefined" ||
+				//test here for whether there is a github repository linked
+				master_json.data.save_script == ""){
+
+				bootbox.prompt("You currently have no link that saves your data. Please follow the instructions in the tutorial (to be completed), and then copy the link to confirm where to save your data below:",function(this_url){
+					if(this_url){
+						master_json.data.save_script = this_url;
+						$("#save_btn").click();
+					}
+				});
 			}
-		}
-	});
+			/*
+
+
+			password check here
+
+
+
+			if(typeof(master_json.data.save_script) == "undefined" ||
+				//test here for whether there is a github repository linked
+				master_json.data.save_script == ""){
+
+
+			}
+			*/
+
+			bootbox.dialog({
+				title:"Select a Condition",
+				message: "Which condition would you like to run? <br><br>" + select_html,
+				buttons: {
+					local:{
+						label: "Localhost",
+						className: 'btn-primary',
+						callback: function(){
+							window.open("RunStudy.html?platform=localhost&" +
+													"location=" + master_json.exp_mgmt.experiment + "&" +
+													"name=" + $("#select_condition").val(),"_blank");
+						}
+					},
+					online: {
+						label: "Online",
+						className: 'btn-primary',
+						callback: function(){
+							master_json.exp_mgmt.exp_condition = $("#select_condition").val();
+							bootbox.confirm("This will go to the link you should send your participants. However, it can take 5+ minutes for this link to update from the moment you push the updates to github",function(result){
+								if(result){
+									if(master_json.github.organisation !== ""){
+										var organisation = master_json.github.organisation;
+									} else {
+										var organisation = master_json.github.username;
+									}
+									var github_url =  "https://" +
+																		organisation +
+																		".github.io/" +
+																		master_json.github.repository +
+																		"/web/" +
+																		dev_obj.version +
+																		"/";
+
+									window.open(github_url  + "RunStudy.html?platform=github&" +
+															"location=" + master_json.exp_mgmt.experiment + "&" +
+															"name="     + master_json.exp_mgmt.exp_condition ,"_blank");
+								}
+							});
+						}
+					},
+					preview:{
+						label: "Preview",
+						className: 'btn-primary',
+						callback: function(){
+							window.open("RunStudy.html?platform=preview&" +
+													"location=" + master_json.exp_mgmt.experiment + "&" +
+													"name=" + $("#select_condition").val(),"_blank");
+						}
+					},
+					cancel: {
+						label: "Cancel",
+						className: 'btn-secondary',
+						callback: function(){
+							//nada;
+						}
+					}
+				}
+			});
+			break;
+	}
+
 });
 $("#save_btn").on("click", function(){
   $("#save_trial_type_button").click();

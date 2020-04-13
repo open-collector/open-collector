@@ -52,9 +52,8 @@ function initiate_master_json(){
 function legacy_initiate_uber(){
   dbx.sharingCreateSharedLink({path:"/uberMegaFile.json"})
 		.then(function(link_created){
-
-      $.get(link_created,function(master_json){
-        dbx_obj.new_upload({path:"/master.json",
+			$.get(link_created.url.replace("www","dl"),function(master_json){
+				dbx_obj.new_upload({path:"/master.json",
                             contents:master_json,
                             mode:'overwrite'},
                             function(result){
@@ -66,6 +65,7 @@ function legacy_initiate_uber(){
                               console.dir("Initial file causing error");
                               report_error(error);
                             },"filesUpload");
+
       });
 		})
     .catch(function(error){ //i.e. this is the first login
@@ -90,7 +90,7 @@ function load_master_json(link_created){
       encrypt_obj.save_script_url();
     }
 
-    
+
 		$("#startup_btn").fadeIn(500);
 		$("#startup_btn").on("click",function(){
 			startup_dialog.modal("hide");

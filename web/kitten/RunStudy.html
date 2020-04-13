@@ -252,7 +252,7 @@ Study = {
       $("#trial"+exp_json.trial_no).contents().children().find("iframe").hide();
       Study.start_post();
     }
-    
+
     switch(Study.get_vars.platform){
       case "localhost":
         eel.save_data(Study.get_vars.location,
@@ -271,7 +271,7 @@ Study = {
             online_save(Study.get_vars.location,
                       $("#participant_code").val(),
                       $("#completion_code").val(),
-                      $("#prehashed_code").val(),  
+                      $("#prehashed_code").val(),
                       JSON.stringify(encrypt(exp_json.public_key,    //the public key
                       JSON.stringify(exp_json.responses))),          //the data
             exp_json.save_script,
@@ -636,7 +636,7 @@ function get_gets() {
 }
 
 function insert_start(){
-  
+
   // skip this if in preview mode
   if(Study.get_vars.platform !== "preview"){
 
@@ -660,7 +660,7 @@ function insert_start(){
         "<h2>Please be careful about what details you give. If you feel that any inappropriate details are being asked, please contact whoever asked you to participate.</h2>" +
         "<h3 class='text-danger'>This website stores information on your local browser to help the experiments run smoother, and resume where you left off if you refresh the page. If you are unhappy with this, please do not proceed</h3>"+
         "<button class='btn btn-primary' onclick='Trial.submit()'>Start</button>";
-    }  
+    }
   }
   Study.activate_pipe();
 }
@@ -675,33 +675,40 @@ function parse_sheets(){
                                 .toLowerCase()
                                 .replace(".csv","") + ".csv"
   proc_stim_loaded = [];
-  
+
   switch(Study.get_vars.platform){
     case "localhost":
     case "preview":
     case "github":
-      var proc_url = "../User/Experiments/" + 
-                     Study.get_vars.location +
-                     "/" + proc_sheet_name;
-      $.get(proc_url,function(proc_sheet_content){
-        exp_json.parsed_proc = collectorPapaParsed(proc_sheet_content);
-        proc_stim_loaded[1] = "procedure";
-        if(proc_stim_loaded.join("-") == "stimuli-procedure"){
-          Study.activate_pipe();
-        }
-      });
-      var stim_url = "../User/Experiments/"  + 
-                     Study.get_vars.location +
-                     "/" +  stim_sheet_name;
-      $.get(stim_url,function(stim_sheet_content){
-        exp_json.parsed_stim = [null,null].concat(collectorPapaParsed(stim_sheet_content)); 
-        proc_stim_loaded[0] = "stimuli";
-        if(proc_stim_loaded.join("-") == "stimuli-procedure"){
-          Study.activate_pipe();
-        }
-      });
+      if(typeof(Study.get_vars.dropbox) !== "undefined" && Study.get_vars.dropbox){
+        exp_json.parsed_proc = collectorPapaParsed(exp_json.all_procs[proc_sheet_name]);
+        exp_json.parsed_stim = collectorPapaParsed(exp_json.all_stims[stim_sheet_name]);
+        Study.activate_pipe();
+      } else {
+        var proc_url = "../User/Experiments/" +
+                       Study.get_vars.location +
+                       "/" + proc_sheet_name;
+        $.get(proc_url,function(proc_sheet_content){
+          exp_json.parsed_proc = collectorPapaParsed(proc_sheet_content);
+          proc_stim_loaded[1] = "procedure";
+          if(proc_stim_loaded.join("-") == "stimuli-procedure"){
+            Study.activate_pipe();
+          }
+        });
+        var stim_url = "../User/Experiments/"  +
+                       Study.get_vars.location +
+                       "/" +  stim_sheet_name;
+        $.get(stim_url,function(stim_sheet_content){
+          exp_json.parsed_stim = [null,null].concat(collectorPapaParsed(stim_sheet_content));
+          proc_stim_loaded[0] = "stimuli";
+          if(proc_stim_loaded.join("-") == "stimuli-procedure"){
+            Study.activate_pipe();
+          }
+        });
+      }
+
+
       break;
-    case "dropbox":
     case "server":
       proc_stim_loaded[1] = "procedure";
       exp_json.parsed_proc = collectorPapaParsed(exp_json.all_procs[proc_sheet_name]);
@@ -712,7 +719,7 @@ function parse_sheets(){
       proc_stim_loaded[0] = "stimuli";
       if(proc_stim_loaded.join("-") == "stimuli-procedure"){
         Study.activate_pipe();
-      }      
+      }
       break;
   }
 }
@@ -1081,10 +1088,20 @@ function start_study(){
       break;
     case "github":
     case "preview":
-      $.get("../User/Experiments/" + Study.get_vars.location + ".json",function(result){
-        exp_json = result;
-        Study.activate_pipe();
-      });
+
+      if(typeof(Study.get_vars.dropbox) !== "undefined" && Study.get_vars.dropbox){
+        $.get(Study.get_vars.dropbox.replace("www.","dl."),function(result){
+          console.dir("result");
+          console.dir(result);
+          exp_json = JSON.parse(result);
+          Study.activate_pipe();
+        });
+      } else {
+        $.get("../User/Experiments/" + Study.get_vars.location + ".json",function(result){
+          exp_json = result;
+          Study.activate_pipe();
+        });
+      }
       break;
     default:
       if(typeof(Study.get_vars.location) !== "undefined" && Study.get_vars.location !== ""){

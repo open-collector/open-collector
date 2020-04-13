@@ -68,6 +68,49 @@ switch(dev_obj.context){
 
 </script>
 
+<div class="modal" tabindex="-1" role="dialog" id="upload_experiment_modal">
+
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload a new experiment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="upload_experiment_input" aria-describedby="upload_experiment_input_addon">
+          <label class="custom-file-label" for="upload_experiment_input">Upload experiment</label>
+        </div>
+        <p>
+          <table>
+            <tr>
+              <td>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" style="width:100%">Default</span>
+                  </div>
+                  <select class="form-control" id="default_experiments_select">
+                    <option disabled selected>Select an experiment</option>
+                    <option>anagram</option>
+                    <option>anagram_time_pressure</option>
+                    <option>stroop</option>
+                    <option>temporal_discounting</option>
+                  </select>
+                  <div class="input-group-append">
+                    <button class="input-group-text btn btn-secondary" id="upload_default_exp_btn" style="width:100%" disabled>Use</button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="load_toolbar">
 	<table>
 		<tr>
@@ -89,14 +132,6 @@ switch(dev_obj.context){
 				</span>
 			</td>
 		</tr>
-		<tr>
-			<td colspan="3">
-				<div class="custom-file" id="show_hide_upload">
-					<input type="file" class="custom-file-input" id="upload_experiment_input" aria-describedby="upload_experiment_input_addon">
-					<label class="custom-file-label" for="upload_experiment_input">Upload experiment</label>
-				</div>
-			</td>
-		</tr>
 	</table>
 </div>
 
@@ -104,6 +139,8 @@ switch(dev_obj.context){
 <script src="Studies/SheetEditor/SheetActions.js"></script>
 
 <script>
+
+
 // CTRL key shortcuts
 /////////////////////
 

@@ -137,7 +137,7 @@ $("#rename_exp_btn").on("click",function(){
       master_json.exp_mgmt.experiments[new_name] =
       master_json.exp_mgmt.experiments[original_name];
       delete(master_json.exp_mgmt.experiments[original_name]);
-      
+
       switch(dev_obj.context){
         case "localhost":
           eel.save_experiment(new_name,master_json.exp_mgmt.experiments[new_name]);
@@ -163,7 +163,7 @@ $("#rename_exp_btn").on("click",function(){
           })
           .catch(function(error){
             report_error(error);
-          });        
+          });
       }
 		}
 		//confirm that there isn't another experiment with that name
@@ -236,26 +236,26 @@ $("#run_btn").on("click",function(){
   if(typeof(master_json.data.save_script) == "undefined" ||
     //test here for whether there is a github repository linked
     master_json.data.save_script == ""){
-       
+
     bootbox.prompt("You currently have no link that saves your data. Please follow the instructions in the tutorial (to be completed), and then copy the link to confirm where to save your data below:",function(this_url){
       if(this_url){
         master_json.data.save_script = this_url;
         $("#save_btn").click();
       }
-    });      
+    });
   }
   /*
-  
-  
+
+
   password check here
-  
-  
-  
+
+
+
   if(typeof(master_json.data.save_script) == "undefined" ||
     //test here for whether there is a github repository linked
     master_json.data.save_script == ""){
-    
-    
+
+
   }
   */
 	var select_html = '<select id="select_condition" class="custom-select">';
@@ -332,7 +332,7 @@ $("#save_btn").on("click", function(){
   if(typeof(master_json.keys) == "undefined" ||
 		 typeof(master_json.keys.public_key) == "undefined"){
 			 encrypt_obj.generate_keys();
-	}  
+	}
 	var experiment 						= master_json.exp_mgmt.experiment;
   var this_exp 							= master_json.exp_mgmt.experiments[experiment];
       this_exp.public_key   = master_json.keys.public_key;
@@ -345,7 +345,7 @@ $("#save_btn").on("click", function(){
     procs.forEach(function(proc){
       this_exp.parsed_procs[proc] = Papa.parse(Papa.unparse(this_exp.all_procs[proc]),{header:true}).data;
     });
-   	
+
     //add surveys to experiment
 		if(typeof(this_exp.surveys) == "undefined"){
 			this_exp.surveys = {};
@@ -425,7 +425,7 @@ $("#save_btn").on("click", function(){
 						bootbox.alert("The trialtype <b>" + cleaned_row["trial type"] + "</b> doesn't appear to exist");
 					}
 					these_variables = list_variables(this_trialtype);
-              
+
 					these_variables.forEach(function(this_variable){
 						if(Object.keys(cleaned_row).indexOf(this_variable) == -1 &&
                this_variable !== "survey" &&
@@ -476,7 +476,7 @@ $("#save_btn").on("click", function(){
       });
       eel.save_experiment(experiment,  //experiment name
                           python_exp); //experiment content
-                          
+
     }
 
     //dropbox check here
@@ -544,12 +544,34 @@ $("#stim_select").on("change",function(){
 	var this_exp   = master_json.exp_mgmt.experiments[experiment];
 	createExpEditorHoT(this_exp.all_stims[this.value], "stimuli", this.value);
 });
-$("#upload_experiment_button").on("click",function(){
-	if($("#show_hide_upload").is(":visible")){
-		$("#show_hide_upload").hide(500);
-	} else {
-		$("#show_hide_upload").show(500);
+
+
+$("#default_experiments_select").on("change",function(){
+	if($("#default_experiments_select").val() !== "Select an experiment"){
+		$("#upload_default_exp_btn").attr("disabled",false);
 	}
+});
+$("#upload_default_exp_btn").on("click",function(){
+	var default_experiment_name = $("#default_experiments_select").val();
+	if(default_experiment_name !== "Select an experiment"){
+		bootbox.prompt({
+			title:"What do you want to call this experiment?",
+			value:$("#default_experiments_select").val(),
+			callback:function(result){
+				$.get("Default/DefaultExperiments/" + default_experiment_name + ".json",function(experiment_json){
+					console.dir(experiment_json);
+					console.dir(JSON.stringify(experiment_json));
+					upload_exp_contents(JSON.stringify(experiment_json),result);
+
+
+				})
+			}
+		});
+	}
+});
+
+$("#upload_experiment_button").on("click",function(){
+	$("#upload_experiment_modal").show();
 });
 $("#upload_experiment_input").on("change",function(){
 	if (this.files && this.files[0]) {

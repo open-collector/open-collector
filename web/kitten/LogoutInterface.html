@@ -171,8 +171,31 @@ $("#github_logo").on("click",function(){
                 '});' +
               '</' + 'script>',
     buttons: {
-      synch: {
-        label: "Upload",
+			Pull: {
+				label: "Pull",
+				className: 'btn-primary',
+				callback: function(){
+					var organisation = $("#github_organisation").val();
+					var repository   = $("#github_repository").val();
+					var username     = $("#github_username").val();
+
+					bootbox.prompt({
+						title: "What is your password? (this will never be saved, but is needed to upload your changes to github)",
+						inputType: "password",
+						callback: function(password){
+							if(password){
+								eel.pull_collector(username,
+																	 password,
+																	 organisation,
+																	 repository,
+																	 update_message);
+							}
+						}
+					});
+				}
+			},
+			Push: {
+        label: "Push",
         className: 'btn-primary',
         callback: function(){
           var organisation = $("#github_organisation").val();
@@ -231,7 +254,7 @@ $("#github_logo").on("click",function(){
 
           bootbox.confirm("Are you sure you want to update Collector? We would suggest you push any changes you have to github before updating.",function(result){
 						if(result){
-							eel.simple_update();							
+							eel.simple_update();
 						}
           });
         }

@@ -19,6 +19,7 @@
 		Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)
 */
 -->
+<script src="iframe_library.js"></script>
 <style type="text/css" media="screen">
 #auto_boost_btn{
   display:none;
@@ -32,6 +33,8 @@
 	height: 500px;
 }
 #boost_table{
+	position:absolute;
+	
 	width:100%;
   display:none;
 }
@@ -47,7 +50,10 @@
 #save_boost_btn{
   display:none;
 }
-
+#boost_table { 
+	position:absolute;
+	top: 120px; 
+}
 </style>
 <nav class="navbar navbar-primary bg-white fixed-top fixed-top-2" id="boost_navbar">
   <table>
@@ -83,7 +89,7 @@
 <div id="autloaded_boosts_div"></div>
 
 <script>
-
+var boost_editor;
 function boost_ace(){
   if(typeof(ace) == "undefined"){
     setTimeout(function(){
@@ -102,7 +108,7 @@ function boost_ace(){
     });
   }
 }
-
+boost_ace();
 
 
 

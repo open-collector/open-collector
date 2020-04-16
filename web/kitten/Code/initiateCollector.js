@@ -125,7 +125,7 @@ function custom_alert(msg,duration) {
 
 
 function detect_context(){
-  var dropbox_developer = true;                                                 //turn to false to make use of eel and python
+  var dropbox_developer = false;                                                 //turn to false to make use of eel and python
   if(document.URL.indexOf("localhost") !== -1){
     if(dropbox_developer){
       return "github";

@@ -51,7 +51,14 @@ def delete_exp(exp_name):
     os.remove("web/User/Experiments/" + exp_name + ".json")# delete file
     shutil.rmtree("web/User/Experiments/" + exp_name)# delete folder
 
-
+@eel.expose
+def pull_collector(username,
+									 organisation,
+									 repository):
+		if organisation == "":
+				organisation = username
+    
+		os.system("git pull")
 
 @eel.expose
 def pull_open_collector(username,

@@ -179,19 +179,10 @@ $("#github_logo").on("click",function(){
 					var repository   = $("#github_repository").val();
 					var username     = $("#github_username").val();
 
-					bootbox.prompt({
-						title: "What is your password? (this will never be saved, but is needed to upload your changes to github)",
-						inputType: "password",
-						callback: function(password){
-							if(password){
-								eel.pull_collector(username,
-																	 password,
-																	 organisation,
-																	 repository,
-																	 update_message);
-							}
-						}
-					});
+					eel.pull_collector(username,
+														 organisation,
+														 repository);
+							
 				}
 			},
 			Push: {

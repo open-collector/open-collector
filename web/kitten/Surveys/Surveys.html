@@ -348,34 +348,39 @@ $("#rename_survey_btn").on("click",function(){
     if(typeof(master_json.surveys.default_surveys[old_survey_name]) !== "undefined"){
       bootbox.alert("You can't rename default experiments.");
     } else {
-    switch(dev_obj.context){
-      case "localhost":
-        bootbox.prompt("What would you like to call this survey instead?",function(new_survey_name){
-          eel.expose(update_master_surveys);
-          function update_master_surveys(old_survey_name,
-                                         new_survey_name){
-            master_json.surveys.user_surveys[new_survey_name] = master_json.surveys.user_surveys[old_survey_name];
-            delete(master_json.surveys.user_surveys[old_survey_name]);
-            
-            
-            //code here to remove the option 
-            
-            update_master_json();
-						list_surveys();
-						$("#survey_select").val(new_survey_name);
-            
-            
-          }
-          
-          eel.rename_survey(old_survey_name.toLowerCase()
-                                           .replace(".csv","") + ".csv",
-                            new_survey_name.toLowerCase()
-                                           .replace(".csv","") + ".csv");
-          
+			switch(dev_obj.context){
+				case "localhost":
+					bootbox.prompt("What would you like to call this survey instead?",function(new_survey_name){
+						eel.expose(update_master_surveys);
+						function update_master_surveys(old_survey_name,
+																					 new_survey_name){
+							master_json.surveys.user_surveys[new_survey_name] = master_json.surveys.user_surveys[old_survey_name];
+							delete(master_json.surveys.user_surveys[old_survey_name]);
+							
+							
+							//code here to remove the option 
+							
+							update_master_json();
+							list_surveys();
+							$("#survey_select").val(new_survey_name);
+							
+							
+						}
+						
+						eel.rename_survey(old_survey_name.toLowerCase()
+																						 .replace(".csv","") + ".csv",
+															new_survey_name.toLowerCase()
+																						 .replace(".csv","") + ".csv");
+						
 
         
-        });
+					});
         break;
+				case "server":
+					//it must be a dropbox renaming, right?
+					break;
+			
+			
       }
     }
   }  

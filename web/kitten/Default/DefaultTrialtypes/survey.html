@@ -579,8 +579,6 @@ function process_survey_question(this_row,row_no){
           // tidy up this code for nice looking buttons
           case "likert":
               feedback_string = generate_feedback_string(feedback_array,0,feedback_color,row_no,this_row);
-              console.dir("break coming up, ja?");
-              console.dir(this_row);
               var options  = this_row["answers"].split("|");
               if(typeof(this_row["values"]) == "undefined"){
                 this_row["values"] = this_row["answers"];

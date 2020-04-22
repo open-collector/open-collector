@@ -86,30 +86,7 @@ if($action == "new"){
 
 if($action == "publish"){
 
-	print_r ($conn);
-
-	$config = array(
-		"digest_alg" => "sha512",
-		"private_key_bits" => 4096,
-		"private_key_type" => OPENSSL_KEYTYPE_RSA,
-	);
-
-	$res = openssl_pkey_new($config);
-	// Get private key
-	openssl_pkey_export($res, $privkey);
-	// Get public key
-	$pubKey = openssl_pkey_get_details($res);
-	$pubKey = $pubKey["key"];
-
-
-	// encrypt privKey using session_key
-	$cipher = "aes-256-cbc";
-	//$key = strToHex(openssl_random_pseudo_bytes(24));
-
-	$local_key = $_POST['local_key'];
-
-	$encrypted_privKey = openssl_encrypt ($privkey, $cipher, $local_key, true);
-
+	
 	$sql = "SELECT `experiment_id`,`published_id` FROM `experiments` where `name` ='$experiment' AND `experiment_id` in (SELECT `experiment_id` from `contributors` where `researcher_id` in  (SELECT `researcher_id` from `researchers_beta` where `user_id` in (SELECT `user_id` FROM `users` where `email` = '$user_email')))";
 
 	// need to change published to true;
@@ -125,10 +102,6 @@ if($action == "publish"){
 		$published_id = $row['published_id'];
 	}
 
-	file_put_contents("../../../../../keys/$published_id-$user_email-public.txt",$pubKey);
-	file_put_contents("../../../../../keys/$published_id-$user_email-private.txt",$encrypted_privKey);
-
-
 	$exp_no = $row['experiment_id'];
 	$sql = "UPDATE `experiments` SET `published` = '1',`published_id` = '$published_id' WHERE `experiment_id` = '$exp_no'";
 
@@ -141,7 +114,7 @@ if($action == "publish"){
 	$release = explode("/",$_SERVER['REQUEST_URI'])[1]; //e.g. antelope/badger
 
 	echo "../$release/RunStudy.html?experiment_id=$published_id|$exp_no";
-	openssl_free_key($res);	// clear key
+	
 }
 
 if($action == "rename"){

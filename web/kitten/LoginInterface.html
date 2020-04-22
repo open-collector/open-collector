@@ -58,36 +58,40 @@ function check_errors(){
 
 
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<div class="modal" tabindex="-1" role="dialog" id="login_modal">
+	<div id="login_register_span"  style="height:90%">
+		<div class="card text-primary bg-white align-middle login_register_card" style="max-width: 36rem; position: relative; top: 50%; transform: translateY(-50%); ">
+			<div class="card-header bg-primary text-white">				
+				<button type="button" class="close" id="dismiss_login_btn">&times;</button>
+				<h4 class="modal-title">Collector Kitten Login</h4>
+			</div>
+			<div class="card-body">
+				<span id="username"></span>
+				<div class="row">
+					<input id="username_input" name="user_email" type="email" class="form-control" placeholder="email">
+				</div>
+				<div class="row">
+						<input id="password_input" name="user_password" type="password" class="form-control" placeholder="password">
+				</div>
+				<div class="row">
+					<div class="g-recaptcha" data-sitekey="6Lcg0awUAAAAAL5nO7Kp-IJ7IEdARN9z1ryYCNi6"></div>
+				</div>
+				<div class="row">
+					<input class="btn btn-primary" type="button" style="margin:3px" id="login_button" 		value="login">
+					<button type="button" class="btn btn-primary" style="display:none" data-toggle="modal" data-target="#institute_div" onclick="list_institutes()" id="register_map_button"> Register </button>
+					<input class="btn btn-primary" type="button" style="margin:3px" id="register_button" value="register" style="display:none">
 
-<div id="login_register_span"  style="height:90%">
-  <div class="card text-primary bg-white align-middle login_register_card" style="max-width: 36rem; position: relative; top: 50%; transform: translateY(-50%); ">
-    <div class="card-header bg-primary text-white">Collector Kitten Login</div>
-    <div class="card-body">
-      <span id="username"></span>
-      <div class="row">
-        <input id="username_input" name="user_email" type="email" class="form-control" placeholder="email">
-      </div>
-      <div class="row">
-          <input id="password_input" name="user_password" type="password" class="form-control" placeholder="password">
-      </div>
-      <div class="row">
-        <div class="g-recaptcha" data-sitekey="6Lcg0awUAAAAAL5nO7Kp-IJ7IEdARN9z1ryYCNi6"></div>
-      </div>
-      <div class="row">
-        <input class="btn btn-primary" type="button" style="margin:3px" id="login_button" 		value="login">
-        <button type="button" class="btn btn-primary" style="display:none" data-toggle="modal" data-target="#institute_div" onclick="list_institutes()" id="register_map_button"> Register </button>
-        <input class="btn btn-primary" type="button" style="margin:3px" id="register_button" value="register" style="display:none">
-
-        <input class="btn btn-primary" type="button" style="margin:3px" id="forgot_button" 	value="forgot password">
+					<input class="btn btn-primary" type="button" style="margin:3px" id="forgot_button" 	value="forgot password">
 
 
-        <!-- hidden inputs -->
-        <input type="submit" class="collectorButton" id="forgot_button_submit" name='login_type' value="forgot" style="display:none">
-        <input  type="submit" class="collectorButton" id="login_button_submit" name='login_type' value="login" style="display:none">
+					<!-- hidden inputs -->
+					<input type="submit" class="collectorButton" id="forgot_button_submit" name='login_type' value="forgot" style="display:none">
+					<input  type="submit" class="collectorButton" id="login_button_submit" name='login_type' value="login" style="display:none">
 
-      </div>
-    </div>
-  </div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!--
@@ -97,14 +101,10 @@ To Do:
 
 -->
 
-<form action="login.php" method="post" style="padding:0px" id="ocollector_login">
-	<input type='hidden' name='return_page' id="return_page"/>
-  <script>
-  $("#return_page").val(document.URL);
-  </script>
-  <input style="display:none" type="submit" class="collectorButton" id="register_submit" name='login_type' value="register">
-</form>
 <script>
+$("#dismiss_login_btn").on("click",function(){
+	$("#login_modal").fadeOut();
+});
 $("#forgot_button").on("click",function(){
 	var email_val = $("#username_input").val();
 	bootbox.prompt({
@@ -117,25 +117,44 @@ $("#forgot_button").on("click",function(){
 });
 $("#login_button").on("click",function(){
   switch(dev_obj.context){
-    case "server":
-      $("#login_button_submit").click(); // to submit form
+    case "server":		
+			$.post("https://ocollector.org/web/kitten/login.php",{
+				login_type: 					  "login",
+				user_email: 					  $("#username_input").val(),
+				user_password: 				  $("#password_input").val(),
+				"g-recaptcha-response": $("#g-recaptcha-response").val()
+			},function(login_obj){
+				console.dir(login_obj);
+				login_obj = JSON.parse(login_obj);
+				var local_key = login_obj.local_key;
+				
+				var error_msg = login_obj.error_msg;				
+				window.localStorage.setItem("local_key",
+																		local_key);
+        window.localStorage.setItem("user_email",
+																		$("#username_input").val());
+				
+				bootbox.alert(error_msg);
+				if(error_msg == "You have succesfully logged in."){
+					$("#login_modal").fadeOut();
+					$("#login_btn").hide();
+					$("#logout_btn").show();
+					
+					//update the username by collector 
+					$("#collector_account_email").html($("#username_input").val());					
+				}				
+			});      
       break;
-    case "localhost":
-
-      var username = $("#username_input").val();
-      var password = $("#password_input").val();
-      $.post("developerLogin.php",{
-        username:username,
-        password:password
-      },function(local_key){
-        window.localStorage.setItem("local_key",local_key);
-        window.localStorage.setItem("user_email",username);
-        //refresh the page.
-        window.location.href = window.location.href;
-      });
-      break;
+    case "github":
+		case "gitpod":
+		case "localhost":
+			bootbox.alert("You need to be on an official collector webpage to login either on: <br><br> <a href='https://some-open-solutions.github.io'>https://some-open-solutions.github.io</a> <br><br> or <br><br> <a href='https://ocollector.org/web/'>https://ocollector.org/web/</a>");
+      break;			
   }
 });
+
+
+
 $("#register_button").on("click",function(){
   // checks
 	// password long enough?
@@ -148,11 +167,21 @@ $("#register_button").on("click",function(){
 					title: "Please confirm your password:",
 					inputType: 'text',
 					callback: function (result) {
+						
 						if(result == $("#password_input").val()){
-							$("#register_map_button").click();
+							$.post("https://ocollector.org/web/kitten/login.php",{
+								login_type: 					  "register",
+								user_email: 					  $("#username_input").val(),
+								user_password: 				  $("#password_input").val(),
+								"g-recaptcha-response": $("#g-recaptcha-response").val()
+							},function(login_obj){
+								console.dir(login_obj);
+								login_obj = JSON.parse(login_obj);								
+								bootbox.alert(login_obj.error_msg);
+							});
 						} else {
 							alert("Passwords did not match.");
-						}
+						}						
 					}
 				});
 			}

@@ -25,6 +25,7 @@
 }
 #collector_logo,
 #github_logo,
+#login_btn,
 #logout_btn{
   display:none;
 }
@@ -52,15 +53,31 @@
 			<img class='logo' style="border-radius: 50%; background-color:white; padding:2px" src="../logos/Github.png" id="github_logo">
 		</td>
     <td>
-      <form action="login.php" method="post" style="padding:0px">
-        <button id="logout_btn" type="submit" name="login_type" value="logout" class="btn btn-primary">Log out</button>
-        <input type="hidden" name="return_page" value="index.php"/>
-      </form>
+			<button id="logout_btn" class="btn btn-primary">Log out</button>
+			<button id="login_btn" class="btn btn-primary">Log in</button>
     </td>
 	</tr>
 </table>
 
 <script>
+$("#login_btn").on("click",function(){
+	$("#login_modal").fadeIn();
+});
+$("#logout_btn").on("click",function(){	
+	$.post("https://ocollector.org/web/kitten/login.php",{
+		login_type: 					  "logout"
+	},function(local_key_obj){
+		local_key_obj = JSON.parse(local_key_obj);
+		window.localStorage.removeItem("local_key");
+		window.localStorage.removeItem("user_email");
+		bootbox.alert(local_key_obj.error_msg);
+		if(local_key_obj.error_msg == "You have succesfully logged out"){
+			$("#collector_account_email").html("");
+			$("#login_btn").show();
+			$("#logout_btn").hide();
+		}				
+	}); 
+});
 
 switch(dev_obj.context){
   case "github":
@@ -69,8 +86,14 @@ switch(dev_obj.context){
     $("#github_logo").show();
     break;
   case "server":
-    $("#collector_account_email").html("<?= $user_email ?>"); //or window.localStorage.getItem("user_email")  ?
-    $("#logout_btn").show();
+		if(window.localStorage.getItem("user_email") !== null){
+			$("#collector_account_email").html(window.localStorage.getItem("user_email"));
+			$("#login_btn").hide();
+			$("#logout_btn").show();
+		} else {
+			$("#login_btn").show();
+			$("#logout_btn").hide();
+		}
     $("#collector_logo").show();
     break;
   default:
@@ -114,12 +137,16 @@ $(".logo").hover(function(){
   },500);
 });
 
-$("#collector_logo").on("click", function(){
-  bootbox.confirm("Are you sure you want to log-out?",function(response){
-    if(response){
-      $("#logout_btn").click();
-    }
-  });
+$("#collector_logo").on("click", function(){																		//check if there is a local key 
+	if(window.localStorage.getItem("local_key") == null){   											//if not - try to get one 
+		$("#login_modal").fadeIn();
+	} else {																																			// if so, ask to log out
+		bootbox.confirm("Are you sure you want to log-out?",function(response){
+			if(response){
+				$("#logout_btn").click();
+			}
+		});
+	}
 });
 
 $("#github_logo").on("click",function(){

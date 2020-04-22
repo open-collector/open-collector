@@ -149,24 +149,7 @@ function detect_version(){
 //detect if this is local or github or ocollector.org
 function initiate_collector(){
   dev_obj.context = detect_context();
-  switch(dev_obj.context){
-    case "server":
-      $.post("Code/InitiateCollector.php",{
-				//nothing to post, just want to run it.
-      },function(local_key){
-				$("#login_div").show();
-        if(local_key !== "no-key"){
-          window.localStorage.setItem("local_key",local_key);
-        }
-      });
-      break;
-    case "github":
-    case "gitpod":
-    case "localhost":
-      $("#logged_in").show();
-      $("#option_Studies").click();
-      break;
-  }
+	$("#option_Studies").click();  
 }
 
 function list_variables(trialtype){

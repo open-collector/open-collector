@@ -151,7 +151,7 @@ $("#rename_exp_btn").on("click",function(){
       if(typeof(dbx) !== "undefined"){
         dbx.filesMove({from_path:"/Experiments/"+original_name+".json",to_path:"/Experiments/"+new_name+".json"})
           .then(function(result){
-            $.post("Studies/AjaxMySQL.php",{
+            $.post("../AjaxMySQL.php",{
               action:"rename",
               original_name:original_name,
               new_name:new_name

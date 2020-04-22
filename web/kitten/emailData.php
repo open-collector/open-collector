@@ -26,25 +26,6 @@ error_reporting(E_ALL);
 require_once 'Code/InitiateCollector.php';
 //require_once ("cleanRequests.php");
 
-function encrypt_decrypt($action, $string,$local_key,$this_iv) {
-  $output = false;
-  $encrypt_method = "AES-256-CBC";
-  $secret_key = $local_key;
-  $secret_iv = $this_iv;
-  // hash
-  $key = hash('sha256', $secret_key);
-
-  // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
-  $iv = substr(hash('sha256', $secret_iv), 0, 16);
-  if ( $action == 'encrypt' ) {
-    $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
-    $output = base64_encode($output);
-  } else if( $action == 'decrypt' ) {
-    $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
-  }
-  return $output;
-}
-
 $all_data 	 		 = $_POST['all_data'];
 $participant 		 = $_SESSION['participant_code'];
 $completion_code = $_SESSION['completion_code'];
@@ -53,7 +34,7 @@ $location	 			 = $_SESSION['location'];
 // identify researchers here
 //mysql to find researchers who contributed to this experiment...?
 
-require_once "../../mailerPassword.php";
+require_once "../../../mailerPassword.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -62,7 +43,7 @@ require '../PHPMailer/src/Exception.php';
 require '../PHPMailer/src/PHPMailer.php';
 require '../PHPMailer/src/SMTP.php';
 
-$mail = new PHPMailer(true);                              // Passing `true` enables exceptions
+$mail = new PHPMailer(true);                            // Passing `true` enables exceptions
 try {
   //Server settings
   $mail->SMTPDebug = 0;                                 // Enable verbose debug output
@@ -99,17 +80,7 @@ try {
 		$mail->Body    = $body_alt_body;
 		$mail->AltBody = $body_alt_body;
 
-		$public_key = file_get_contents("../../simplekeys/public_$user.txt");
-		$cipher = "aes-256-cbc";
-		$symmetric_key = openssl_random_pseudo_bytes(32);
-		$this_iv			 = openssl_random_pseudo_bytes(16);
-
-		$encrypted_data = encrypt_decrypt("encrypt",$all_data,$symmetric_key,$this_iv);
-
-		openssl_public_encrypt ($symmetric_key, $encrypted_symmetric_key, $public_key);
-		file_put_contents("../../simplekeys/symmetric-$user-$experiment_id-$participant.txt",$encrypted_symmetric_key);
-		file_put_contents("../../simplekeys/iv-$user-$experiment_id-$participant.txt",$this_iv);
-		$mail->AddStringAttachment($encrypted_data,"encrypted_$experiment_id-$participant.txt");
+		$mail->AddStringAttachment($all_data,"encrypted_$experiment_id-$participant.txt");
 		$mail->addAddress($user);     // Add a recipient
 		$mail->send();
 	}

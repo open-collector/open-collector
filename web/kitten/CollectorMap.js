@@ -31,9 +31,6 @@ var isolation_map = {
     },
     "default_experiment.json" : "file",
       //stuff here
-  },
-  Data:{
-    "ListData.php" : "file",
   },  
 
   Help:{

@@ -1,13 +1,22 @@
 # open-collector
 
-Go to https://open-collector.github.io/open-collector/web to use.
-
-## Getting started
-
-
 # Collector
 A program for running experiments on the web
 Copyright 2012-2015 Mikey Garcia & Nate Kornell
+
+Kitten-release (2019-2020) Anthony Haffey
+
+## Quick start
+
+To use without installation go to either:
+- https://ocollector.org/web
+- https://some-open-solutions.github.io/open-collector/web
+
+## Installing Collector on your machine
+
+### Why install it?
+
+By using collector
 
 ## FAQ
 #### How do I get started?

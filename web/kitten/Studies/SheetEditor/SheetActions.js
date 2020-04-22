@@ -236,6 +236,12 @@ $("#run_btn").on("click",function(){
 	var experiment = master_json.exp_mgmt.experiment;
 	var exp_json = master_json.exp_mgmt.experiments[experiment];
 	var select_html = '<select id="select_condition" class="custom-select">';
+	if(typeof(exp_json.conditions) == "undefined"){
+		exp_json.conditions = collectorPapaParsed(exp_json.cond_array);
+		exp_json.conditions = exp_json.conditions.filter(function(condition){
+			return condition.name !== "";
+		});
+	}
 	exp_json.conditions.forEach(function(condition){
 		select_html += "<option>" + condition.name + "</option>";
 	});
